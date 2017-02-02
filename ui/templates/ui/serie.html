@@ -1,0 +1,62 @@
+{% load static %}
+
+<link rel="{% static 'js/bower_components/jquery-mobile/css/themes/default/jquery.mobile.css' %}" />
+<script src="{% static 'js/bower_components/jquery-mobile/js/jquery.mobile.js' %}></script>
+<script src="{% static 'js/bower_components/jquery/jquery.js' %}></script>
+<script src="{% static 'js/bower_components/chart.js/dist/Chart.js' %}"></script>
+
+{% if serie %}
+
+<div>{{ serie.name }}</div>
+
+{% if datapoints %}
+<ul>
+  <script>
+   var serie = {{ serie_json }}
+   var value_data = {{ values_json }}
+   var time_data = {{ times_json }}
+  </script>
+  <script src="{% static 'js/draw-serie.js' %}"></script>
+  
+  {% for datapoint in datapoints %}
+  <li>
+    <form method="POST"
+	  action="{% url 'api:datapoint' serie.id datapoint.id %}"
+	  id="update_datapoint_{{datapoint.id}}">
+      {% csrf_token %}
+      <input name='value' type="text" value="{{ datapoint.value }}" />
+      <input name='time' type="text" value='{{ datapoint.time }}' />
+      <input type="submit" value="update" />
+    </form>
+  </li>
+  {% endfor %}
+  <li>
+    <form method="POST"
+	  action="{% url 'api:datapoint' serie.id datapoint.id %}"
+	  id="update_datapoint_new">
+      {% csrf_token %}
+      <input name='value' type="text" value="" />
+      <input name='time' type="text" value='' />
+      <input type="submit" value="Add datapoint" />
+    </form>
+  </li>
+</ul>
+<div style="height: 80px;">
+  <canvas id="serie-graph"></canvas>
+</div>
+{% else %}
+<h2>No datapoints in series.<h2>
+  <form method="POST"
+	action="{% url 'api:datapoint' serie.id datapoint.id %}"
+	id="update_datapoint_new">
+    {% csrf_token %}
+    <input name='value' type="text" value="" />
+    <input name='time' type="text" value='' />
+    <input type="submit" value="Add datapoint" />
+  </form>
+  
+{% endif %}
+{% else %}
+<h1>Serie not found.</h1>  
+  
+{% endif %}

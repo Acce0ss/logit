@@ -1,0 +1,17 @@
+<h1>Add new serie</h1>
+
+<form id="create-serie-form" action="{% url 'api:serie' %}" method="POST">
+  {% csrf_token %}
+  <input type="text" name="name" />
+  <select name="value_type" form="create-serie-form">
+    <option value="float">Float</option>
+    <option value="integer">Integer</option>
+    <option value="string">String</option>
+  </select>
+  <select name="time_type" form="create-serie-form">
+    <option value="posix_us">Microseconds since POSIX epoch</option>
+    <option value="absolute">Absolute time, with 0 origin</option>
+    <option value="ISO">ISO formatted string</option>
+  </select>
+  <input type='submit' value='Add' />
+</form>
