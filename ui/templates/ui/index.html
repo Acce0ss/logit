@@ -11,18 +11,8 @@
   <script src="{% static 'js/bower_components/chart.js/dist/Chart.js' %}"></script>
 </head>
 <body>
-  <div data-role="page">
-    <div data-role="header">
-      <h1>LogIt</h1>
-    </div>
-    
-    <div data-role="main" class="ui-content">
-      <p>Hello</p>
-    </div>
-    
-    <div data-role="footer">
-      <h1>Powered by Django and jQuery</h1>
-    </div>
-  </div>
+  {% include 'ui/mainpage.html' %}
+  
+
 </body>
 </html>
