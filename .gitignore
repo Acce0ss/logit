@@ -3,3 +3,4 @@ __pycache__
 bower_components
 *#*#
 *sqlite3
+*pyc
