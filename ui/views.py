@@ -10,10 +10,39 @@ import json
 def index(request):
   series_list = Serie.objects.all()
   context = {
-    'series_list': series_list
+    'series_list': series_list,
+    "pagename": "main",
+    "loggedIn": False
   }
-  
-  return render(request, 'ui/index.html', context)
+  return render(request, 'ui/main-page.html', context)
+
+def login(request):
+  context = {
+    "pagename": "login",
+    "loggedIn": False
+  }
+  return render(request, 'ui/login-page.html', context)
+
+def register(request):
+  context = {
+    "pagename": "register",
+    "loggedIn": False
+  }
+  return render(request, 'ui/register-page.html', context)
+
+def about(request):  
+  context = {
+    "pagename": "about",
+    "loggedIn": False
+  }
+  return render(request, 'ui/about-page.html', context)
+
+def series(request):
+  context = {
+    "pagename": "series",
+    "loggedIn": False
+  }
+  return render(request, 'ui/series-page.html', context)
 
 def add_serie(request):
   return render(request, 'ui/add-serie.html', {})
