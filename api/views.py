@@ -9,6 +9,7 @@ from django.http import HttpResponse
 from django.utils import timezone, dateparse
 
 from django.contrib.auth import authenticate, login as blogin, logout as blogout
+from django.contrib.auth.decorators import login_required
 
 from django.db.models import F
 
@@ -31,10 +32,12 @@ def login(request):
   else:
     return HttpResponse("{'code': ['LOGIN_FAILED']}")
 
+@login_required
 def logout(request):
   blogout(request)
   return HttpResponse("{'code': ['LOGOUT_SUCCESS']}")
   
+@login_required
 def serie(request, serie_id=None):
   if request.method == "GET":
     return serie_get(request, serie_id)
@@ -91,6 +94,7 @@ def serie_post(request, serie_id):
     
   return HttpResponse(json.dumps({"code":["SUCCESS"]}))
 
+@login_required
 def datapoint(request, serie_id, datapoint_id=None):
   if request.method == "GET":
     return datapoint_get(request, serie_id, datapoint_id)
