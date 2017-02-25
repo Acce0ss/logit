@@ -12,13 +12,11 @@ from django.contrib.auth import authenticate, login as blogin, logout as blogout
 
 from django.db.models import F
 
-from django.middleware import csrf
-
 def index(request):
   return HttpResponse("Hi worldies");
 
 def login_challenge(request):
-  return HttpResponse("{'code':'SUCCESS', 'csrf':'" + csrf.get_token(request) + "'}")
+  return HttpResponse("{'code':'SUCCESS', 'csrf':'" + request.META.get("CSRF_COOKIE") + "'}")
 
 def login(request):
 
