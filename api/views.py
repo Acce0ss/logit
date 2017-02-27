@@ -71,11 +71,9 @@ def serie_get(request, serie_id):
 def serie_post(request, serie_id):
 
   if serie_id is None:
-    new_serie = Serie()
-    new_serie.created = timezone.now()
-    new_serie.value_type = request.POST.get("value_type")
-    new_serie.time_type = request.POST.get("time_type")
-    new_serie.name = request.POST.get("name")
+    new_serie = Serie.objects.create(value_type = request.POST.get("value_type"),
+                                     time_type = request.POST.get("time_type"),
+                                     name = request.POST.get("name"))
     new_serie.save()
   else:
     try:

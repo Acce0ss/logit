@@ -7,7 +7,7 @@ from django.utils import timezone
 
 class Serie(models.Model):
     name = models.CharField(max_length=200)
-    created = models.DateTimeField('created')
+    created = models.DateTimeField(default=timezone.now)
     value_type = models.CharField(max_length=30)
     time_type = models.CharField(max_length=30)
 
