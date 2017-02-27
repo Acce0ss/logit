@@ -2,7 +2,7 @@ from django.shortcuts import render
 
 # Create your views here.
 
-from api.models import Serie
+from valuelog.models import Serie
 from django.utils.safestring import mark_safe
 
 import json

@@ -27,18 +27,17 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
 
 INSTALLED_APPS = [
-    'ui.apps.UiConfig',
-    'api.apps.ApiConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'valueui.apps.ValueuiConfig',
+    'valuelog.apps.ValuelogConfig'
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -101,6 +100,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTH_USER_MODEL = 'valuelog.User'
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/

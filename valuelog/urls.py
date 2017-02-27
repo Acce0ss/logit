@@ -1,7 +1,7 @@
 from django.conf.urls import url
 from . import views
 
-app_name = 'api'
+app_name = 'valuelog'
 
 urlpatterns = [
     url(r'^$', views.index, name="index"),
