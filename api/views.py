@@ -17,7 +17,7 @@ def index(request):
   return HttpResponse("Hi worldies");
 
 def login_challenge(request):
-  return HttpResponse("{'code':'SUCCESS', 'csrf':'" + request.META.get("CSRF_COOKIE") + "'}")
+  return HttpResponse(json.dumps({'code':['SUCCESS'], 'csrf': request.META.get("CSRF_COOKIE")}))
 
 def login(request):
 
@@ -28,14 +28,14 @@ def login(request):
   
   if user is not None:
     blogin(request, user)
-    return HttpResponse("{'code': ['LOGIN_SUCCESS']}")
+    return HttpResponse(json.dumps({'code': ['LOGIN_SUCCESS']}))
   else:
-    return HttpResponse("{'code': ['LOGIN_FAILED']}")
+    return HttpResponse(json.dumps({'code': ['LOGIN_FAILED']}))
 
 @login_required
 def logout(request):
   blogout(request)
-  return HttpResponse("{'code': ['LOGOUT_SUCCESS']}")
+  return HttpResponse(json.dumps({'code': ['LOGOUT_SUCCESS']}))
   
 @login_required
 def serie(request, serie_id=None):
@@ -44,7 +44,7 @@ def serie(request, serie_id=None):
   elif request.method == "POST":
     return serie_post(request, serie_id)
   elif request.method == "DELETE":
-    return HttpResponse("{'code': ['NOT_IMPLEMENTED']}")
+    return HttpResponse(json.dumps({"code": ["NOT_IMPLEMENTED"]}))
 
 def serie_get(request, serie_id):
 
@@ -53,12 +53,12 @@ def serie_get(request, serie_id):
   except:
     output = {}
     output['id'] = serie_id
-    output['code'] = ['NOT_FOUND']
+    output['code'] = ["NOT_FOUND"]
     return HttpResponse(json.dumps(output))
 
   output = {
     'id': serie_id,
-    'code': ['SUCCESS'],
+    'code': ["SUCCESS"],
     'name': serie.name,
     'value_type': serie.value_type,
     'time_type': serie.time_type,
@@ -99,16 +99,16 @@ def datapoint(request, serie_id, datapoint_id=None):
   elif request.method == "POST":
     return datapoint_post(request, serie_id, datapoint_id)
   elif request.method == "DELETE":
-    return HttpResponse("{'code': ['NOT_IMPLEMENTED']}")
+    return HttpResponse(json.dumps({'code': ['NOT_IMPLEMENTED']}))
 
 def datapoint_get(request, serie_id, datapoint_id):
   try:
     serie = Serie.objects.get(id=serie_id)
     datapoint = serie.datapoint_set.get(id=datapoint_id)
   except Serie.DoesNotExist:
-    return HttpResponse("{'code': ['SERIE_NOT_FOUND']}")
+    return HttpResponse(json.dumps({"code": ["SERIE_NOT_FOUND"]}))
   except DataPoint.DoesNotExist:
-    return HttpResponse("{'code': ['DATAPOINT_NOT_FOUND']}")
+    return HttpResponse(json.dumps({"code": ["DATAPOINT_NOT_FOUND"]}))
 
   value = datapoint.get_value()
   time = datapoint.get_time()
@@ -134,7 +134,7 @@ def datapoint_post(request, serie_id, datapoint_id):
       datapoint.serie = Serie.objects.get(id=serie_id)
       datapoint.save()
     except Serie.DoesNotExist:
-      return HttpResponse("{'code': ['SERIE_NOT_FOUND']}")
+      return HttpResponse(json.dumps({'code': ['SERIE_NOT_FOUND']}))
 
   else:
     try:
@@ -146,10 +146,10 @@ def datapoint_post(request, serie_id, datapoint_id):
         datapoint.time = dateparse.parse_datetime(request.POST['time'])
       datapoint.save()
     except Serie.DoesNotExist:
-      return HttpResponse("{'code': ['SERIE_NOT_FOUND']}")
+      return HttpResponse(json.dumps({'code': ['SERIE_NOT_FOUND']}))
     except DataPoint.DoesNotExist:
-      return HttpResponse("{'code': ['DATAPOINT_NOT_FOUND']}")
+      return HttpResponse(json.dumps({'code': ['DATAPOINT_NOT_FOUND']}))
     except:
-      return HttpResponse("{'code': ['ERROR']}")
+      return HttpResponse(json.dumps({'code': ['ERROR']}))
 
-  return HttpResponse("{'code': ['SUCCESS']}")
+  return HttpResponse(json.dumps({'code': ['SUCCESS']}))
