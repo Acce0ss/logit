@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'valuelog.apps.ValuelogConfig'
 ]
 
+AUTH_USER_MODEL = 'valuelog.LogUser'
+
 MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -99,8 +101,6 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
-AUTH_USER_MODEL = 'valuelog.User'
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
