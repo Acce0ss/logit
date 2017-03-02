@@ -2,8 +2,26 @@
 
 {% block content %}
 
-<p>
-This is where login will eventually be
-</p>
+<script>
+  $(document).ready(function (){
+  
+  $('#form-login').submit(function (event)
+  {
+  event.preventDefault();
+  postLoginForm($("#form-login"));
+  });
+  
+  });
+</script>
+
+<div id="login-display">
+  <form id="form-login" action="" method="POST">
+    <label for="username">Username:</label>
+    <input type="text" placeholder="username" name="username"/>
+    <label for="password">Password:</label>
+    <input type="password" placeholder="password" name="password"/>
+    <input type="submit" value="Login"/>
+  </form>
+</div>
 
 {% endblock %}
