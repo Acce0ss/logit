@@ -21,16 +21,23 @@ def login_challenge(request):
 
 def login(request):
 
-  creds = json.loads(request.POST.get('creds'))
+  if request.user.is_authenticated:
+    return HttpResponse(json.dumps({'code': ['ALREADY_LOGGED_IN'], 'csrf':request.META.get('CSRF_COOKIE')}))
   
+  try:
+    creds = json.loads(request.POST.get('creds'))
+  except:
+    creds = {'username': request.POST.get('username'),
+             'password': request.POST.get('password')}
+    
   user = authenticate(username=creds['username'],
                       password=creds['password'])
   
   if user is not None:
     blogin(request, user)
-    return HttpResponse(json.dumps({'code': ['LOGIN_SUCCESS']}))
+    return HttpResponse(json.dumps({'code': ['LOGIN_SUCCESS'], 'csrf':request.META.get('CSRF_COOKIE')}))
   else:
-    return HttpResponse(json.dumps({'code': ['LOGIN_FAILED']}))
+    return HttpResponse(json.dumps({'code': ['LOGIN_FAILED'], 'csrf':request.META.get('CSRF_COOKIE')}))
 
 @login_required
 def logout(request):
