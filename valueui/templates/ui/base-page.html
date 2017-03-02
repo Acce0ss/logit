@@ -38,7 +38,12 @@
 
     <div data-role="panel" id="{{pagename}}-menu-panel" data-position="right"
 	 data-display="reveal">
+
+      {% if loggedIn %}
+      <button onclick='sendLogout()'>Logout</button>
+      {% else %}
       <a href="/login" data-prefetch="true" class="ui-btn">Login</a>
+      {% endif %}      
       <a href="/register" data-prefetch="true" class="ui-btn">Register</a>
       <a href="/about" data-prefetch="true" class="ui-btn">About</a>
     </div>
