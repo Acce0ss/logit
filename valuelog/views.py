@@ -82,6 +82,7 @@ def serie_post(request, serie_id):
                                      time_type = request.POST.get("time_type"),
                                      name = request.POST.get("name"))
     new_serie.save()
+    serie_id = new_serie.id
   else:
     try:
       serie = Serie.objects.get(id=serie_id)
@@ -97,7 +98,7 @@ def serie_post(request, serie_id):
       serie.name = request.POST.get("name")
     serie.save()
     
-  return HttpResponse(json.dumps({"code":["SUCCESS"]}))
+  return HttpResponse(json.dumps({"code":["SUCCESS"], 'id': serie_id}))
 
 @login_required
 def datapoint(request, serie_id, datapoint_id=None):
