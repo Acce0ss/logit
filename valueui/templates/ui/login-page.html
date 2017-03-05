@@ -2,6 +2,14 @@
 
 {% block content %}
 
+{% if loggedIn %}
+
+<div id="login-display">
+  <p>Logout first to login as another user.</p>
+</div>
+
+{% else %}
+
 <script>
   $(document).ready(function (){
   
@@ -23,5 +31,6 @@
     <input type="submit" value="Login"/>
   </form>
 </div>
+{% endif %}
 
 {% endblock %}
