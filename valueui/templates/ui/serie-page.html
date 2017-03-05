@@ -6,18 +6,19 @@
 
 <script>
   $(document).ready(function (e){
-  populateListWithSeries($('#series-list'));
+  
   });
 </script>
 <h3>
-  Your series
+  Serie
 </h3>
-<ul id="series-list" data-role="listview" data-inset="True">
+
+<ul id="datapoint-list-{{serie_id}}" data-role="listview" data-inset="True">
 </ul>
 
 {% else %}
 
-<p> Here, all your series will be listed after you log in. </p>
+<p> You're in a wrong place. </p>
 
 {% endif %}
 

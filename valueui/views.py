@@ -48,15 +48,9 @@ def add_serie(request):
   return render(request, 'ui/add-serie.html', {})
 
 def serie(request, serie_id):
-  serie = Serie.objects.get(id=serie_id)
-  datapoints = serie.datapoint_set.all()
-  value_data = [ dp.get_value() for dp in datapoints ]
-  time_data = [ dp.get_time() for dp in datapoints ]
   context = {
-    'serie': serie,
-    'datapoints': datapoints,
-    'serie_json': mark_safe(json.dumps(serie.as_dict())),
-    'values_json': mark_safe(json.dumps(value_data)),
-    'times_json': mark_safe(json.dumps(time_data))
+    "pagename": "serie-" + str(serie_id),
+    "loggedIn": request.user.is_authenticated,
+    "serie_id": serie_id
   }
-  return render(request, 'ui/serie.html', context)
+  return render(request, 'ui/serie-page.html', context)

@@ -10,6 +10,9 @@
   <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
   <script src="{% static 'js/bower_components/chart.js/dist/Chart.js' %}"></script>
   <script src="{% static 'js/auth.js'%}"></script>
+  {% if loggedIn %}
+  <script src="{% static 'js/series.js'%}"></script>
+  {% endif %}
   <script>
       $(document).ready(function (){
 
@@ -43,8 +46,14 @@
       <button onclick='sendLogout()'>Logout</button>
       {% else %}
       <a href="/login" data-prefetch="true" class="ui-btn">Login</a>
-      {% endif %}      
       <a href="/register" data-prefetch="true" class="ui-btn">Register</a>
+      {% endif %}
+
+      {% if loggedIn %}
+      <a href="/series" data-prefetch="true" class="ui-btn">Series</a>
+      <a href="/settings" class="ui-btn">Settings</a>
+      {% endif %}
+      
       <a href="/about" data-prefetch="true" class="ui-btn">About</a>
     </div>
 
