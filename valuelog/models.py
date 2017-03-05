@@ -21,6 +21,7 @@ class Serie(models.Model):
 
     def as_dict(self):
       return {
+        'id': self.id,
         'name': self.name,
         'created': self.created.isoformat(),
         'value_type': self.value_type,
