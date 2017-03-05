@@ -43,7 +43,16 @@ def login(request):
 def logout(request):
   blogout(request)
   return HttpResponse(json.dumps({'code': ['LOGOUT_SUCCESS']}))
-  
+
+@login_required
+def series(request):
+  ss = Serie.objects.all()
+  output = {
+    'code':['SUCCESS'],
+    'series': [serie.as_dict() for serie in ss]
+  }
+  return HttpResponse(json.dumps(output))
+
 @login_required
 def serie(request, serie_id=None):
   if request.method == "GET":
