@@ -1,6 +1,6 @@
 import datetime
 
-from django.db import models
+from django.db import models, transaction
 from django.utils import timezone
 
 from django.conf import settings
@@ -14,17 +14,17 @@ class User(AbstractUser):
 
 class LogUserManager(models.Manager):
     def validate_and_create_user(self, username, email, password):
-
-        baseuser = User(username=username, email=email)
-        baseuser.set_password(password)
-        baseuser.full_clean()
+        newuser = LogUser()
         
-        newuser = LogUser(user=baseuser)
-        newuser.full_clean()
-
-        # only save to db if both creations are valid
-        baseuser.save()
-        newuser.save()
+        with transaction.atomic():
+            baseuser = User(username=username, email=email)
+            baseuser.set_password(password)
+            baseuser.full_clean()
+            baseuser.save()
+        
+            newuser.user = baseuser
+            newuser.full_clean()
+            newuser.save()
 
         return newuser
 
