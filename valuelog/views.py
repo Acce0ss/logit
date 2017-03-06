@@ -46,7 +46,7 @@ def logout(request):
 
 @login_required
 def series(request):
-  ss = Serie.objects.all()
+  ss = Serie.objects.filter(owner=request.user.loguser.id)
   output = {
     'code':['SUCCESS'],
     'series': [serie.as_dict() for serie in ss]
