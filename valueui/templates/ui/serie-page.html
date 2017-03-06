@@ -6,12 +6,16 @@
 
 <script>
   $(document).ready(function (e){
-  
+  populateCanvasIfDataAvailable($("#serie-{{serie_id}}-graph"), {{serie_id}});
   });
 </script>
 <h3>
   Serie
 </h3>
+
+<div style="height: 80px;">
+  <canvas id="serie-{{serie_id}}-graph"></canvas>
+</div>
 
 <ul id="datapoint-list-{{serie_id}}" data-role="listview" data-inset="True">
 </ul>
