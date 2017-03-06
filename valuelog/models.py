@@ -37,10 +37,24 @@ class LogUser(models.Model):
     objects = LogUserManager()
 
 class Serie(models.Model):
+
+    VALUE_TYPE = (
+        ('flt', 'Float'),
+        ('int', 'Integer'),
+        ('str', 'String'),
+        ('dbl', 'Double')
+    )
+
+    TIME_TYPE = (
+        ('psx', 'POSIX'),
+        ('iso', 'ISO'),
+        ('abs', 'Absolute')
+    )
+
     name = models.CharField(max_length=200)
     created = models.DateTimeField(default=timezone.now)
-    value_type = models.CharField(max_length=30)
-    time_type = models.CharField(max_length=30)
+    value_type = models.CharField(max_length=3, choices=VALUE_TYPE)
+    time_type = models.CharField(max_length=3, choices=TIME_TYPE)
 
     def was_created_recently(self):
       return self.created >= timezone.now() - datetime.timedelta(days=1)
@@ -71,21 +85,21 @@ class DataPoint(models.Model):
     time = models.CharField(max_length=30)
 
     def get_time(self):
-      if self.serie.time_type == "posix_us":
+      if self.serie.time_type == "psx":
         return int(self.time)
-      elif self.serie.time_type == "absolute":
+      elif self.serie.time_type == "abs":
         return int(self.value)
-      elif self.serie.time_type == "ISO":
+      elif self.serie.time_type == "iso":
         return self.time
       
     def get_value(self):
-      if self.serie.value_type == "float":
+      if self.serie.value_type == "flt":
         return float(self.value)
-      elif self.serie.value_type == "integer":
+      elif self.serie.value_type == "int":
         return int(self.value)
-      elif self.serie.value_type == "double":
+      elif self.serie.value_type == "dbl":
         return float(self.value)
-      elif self.serie.value_type == "string":
+      elif self.serie.value_type == "str":
         return self.value 
     
     def as_dict(self):
