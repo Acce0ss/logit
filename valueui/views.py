@@ -8,9 +8,7 @@ from django.utils.safestring import mark_safe
 import json
 
 def index(request):
-  series_list = Serie.objects.all()
   context = {
-    'series_list': series_list,
     "pagename": "main",
     "loggedIn": request.user.is_authenticated
   }
