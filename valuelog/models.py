@@ -3,12 +3,38 @@ import datetime
 from django.db import models
 from django.utils import timezone
 
+from django.conf import settings
+
 from django.contrib.auth.models import AbstractUser
 
 # Create your models here.
 
-class LogUser(AbstractUser):
+class User(AbstractUser):
     pass
+
+class LogUserManager(models.Manager):
+    def validate_and_create_user(self, username, email, password):
+
+        baseuser = User(username=username, email=email)
+        baseuser.set_password(password)
+        baseuser.full_clean()
+        
+        newuser = LogUser(user=baseuser)
+        newuser.full_clean()
+
+        # only save to db if both creations are valid
+        baseuser.save()
+        newuser.save()
+
+        return newuser
+
+class LogUser(models.Model):
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE
+    )
+
+    objects = LogUserManager()
 
 class Serie(models.Model):
     name = models.CharField(max_length=200)

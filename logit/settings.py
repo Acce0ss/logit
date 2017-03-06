@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'valuelog.apps.ValuelogConfig'
 ]
 
-AUTH_USER_MODEL = 'valuelog.LogUser'
+AUTH_USER_MODEL = 'valuelog.User'
 
 MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',
