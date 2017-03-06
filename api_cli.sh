@@ -45,6 +45,9 @@ case $1 in
     logout)
 	apicall GET logout
 	;;
+    series)
+	apicall GET series
+	;;
     *)
 	CMD=$1
 	
