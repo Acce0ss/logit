@@ -68,6 +68,7 @@ class Migration(migrations.Migration):
                 ('created', models.DateTimeField(default=django.utils.timezone.now)),
                 ('value_type', models.CharField(choices=[('flt', 'Float'), ('int', 'Integer'), ('str', 'String'), ('dbl', 'Double')], max_length=3)),
                 ('time_type', models.CharField(choices=[('psx', 'POSIX'), ('iso', 'ISO'), ('abs', 'Absolute')], max_length=3)),
+                ('owner', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='valuelog.LogUser')),
             ],
         ),
         migrations.AddField(

@@ -51,6 +51,8 @@ class Serie(models.Model):
         ('abs', 'Absolute')
     )
 
+    owner = models.ForeignKey(LogUser, on_delete=models.CASCADE)
+    
     name = models.CharField(max_length=200)
     created = models.DateTimeField(default=timezone.now)
     value_type = models.CharField(max_length=3, choices=VALUE_TYPE)
@@ -65,7 +67,8 @@ class Serie(models.Model):
         'name': self.name,
         'created': self.created.isoformat(),
         'value_type': self.value_type,
-        'time_type': self.time_type
+        'time_type': self.time_type,
+        'owner': self.owner.id
       }
 
     def values_as_list(self):
