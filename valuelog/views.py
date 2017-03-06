@@ -87,11 +87,24 @@ def serie_get(request, serie_id):
 def serie_post(request, serie_id):
 
   if serie_id is None:
-    new_serie = Serie.objects.create(value_type = request.POST.get("value_type"),
-                                     time_type = request.POST.get("time_type"),
-                                     name = request.POST.get("name"))
-    new_serie.save()
-    serie_id = new_serie.id
+    try:
+      new_serie = Serie(value_type = request.POST.get("value_type"),
+                        time_type = request.POST.get("time_type"),
+                        name = request.POST.get("name"),
+                        owner = request.user.loguser)
+      #validate the values
+      new_serie.full_clean()
+
+      #save if no exception was thrown
+      new_serie.save()
+
+      #for returning the id
+      serie_id = new_serie.id
+    except:
+      output = {}
+      output['code'] = ['NOT_CREATED','INVALID_DATA']
+      return HttpResponse(json.dumps(output))
+
   else:
     try:
       serie = Serie.objects.get(id=serie_id)
