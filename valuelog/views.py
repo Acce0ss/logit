@@ -1,9 +1,8 @@
-from django.shortcuts import render
-
-# Create your views here.
-
 import json
+
 from .models import Serie, DataPoint
+
+from django.core.exceptions import ValidationError
 
 from django.http import HttpResponse
 from django.utils import timezone, dateparse
@@ -158,13 +157,21 @@ def datapoint_post(request, serie_id, datapoint_id):
       datapoint = DataPoint()
       datapoint.value = request.POST['value']
       if 'time' in request.POST and request.POST['time'] != "":
-        datapoint.time = dateparse.parse_datetime(request.POST['time'])
+        datapoint.time = request.POST['time']
       else:
-        datapoint.time = timezone.now()
+        datapoint.time = timezone.now().isoformat()
       datapoint.serie = Serie.objects.get(id=serie_id)
+
+      datapoint.validate_value()
+      datapoint.validate_time()
+      
+      datapoint.full_clean()
       datapoint.save()
     except Serie.DoesNotExist:
       return HttpResponse(json.dumps({'code': ['SERIE_NOT_FOUND']}))
+    except ValidationError as e:
+      print(e)
+      return HttpResponse(json.dumps({'code': ['INVALID_DATA']}))
 
   else:
     try:
@@ -172,13 +179,19 @@ def datapoint_post(request, serie_id, datapoint_id):
       datapoint = serie.datapoint_set.get(id=datapoint_id)
       if 'value' in request.POST and request.POST['time'] != "":
         datapoint.value = request.POST['value']
+        datapoint.validate_value()
       if 'time' in request.POST and request.POST['value'] != "":
         datapoint.time = dateparse.parse_datetime(request.POST['time'])
+        datapoint.validate_time()
+      datapoint.full_clean()
       datapoint.save()
     except Serie.DoesNotExist:
       return HttpResponse(json.dumps({'code': ['SERIE_NOT_FOUND']}))
     except DataPoint.DoesNotExist:
       return HttpResponse(json.dumps({'code': ['DATAPOINT_NOT_FOUND']}))
+    except ValidationError as e:
+      print(e)
+      return HttpResponse(json.dumps({'code': ['INVALID_DATA']}))
     except:
       return HttpResponse(json.dumps({'code': ['ERROR']}))
 

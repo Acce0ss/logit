@@ -1,7 +1,9 @@
 import datetime
 
+from django.core.exceptions import ValidationError
+
 from django.db import models, transaction
-from django.utils import timezone
+from django.utils import timezone,dateparse
 
 from django.conf import settings
 
@@ -84,8 +86,39 @@ class DataPoint(models.Model):
     # values and times are stored as strings on purpose, to
     # make first implementation faster. Later, more specific
     # scheme for different datapoint types needs to be deviced.
-    value = models.CharField(max_length=30)
-    time = models.CharField(max_length=30)
+    value = models.CharField(max_length=40)
+    time = models.CharField(max_length=40)
+
+    def type_check(target):
+        def _type_check(value):
+            try:
+                if target(value) is None:
+                    return False
+                return True
+            except (ValueError, TypeError):
+                return False
+        return _type_check
+    
+    VALIDATE_TIME = {
+        'psx': type_check(int),
+        'abs': type_check(int),
+        'iso': type_check(dateparse.parse_datetime)
+    }
+
+    VALIDATE_VALUE = {
+        'flt': type_check(float),
+        'int': type_check(int),
+        'dbl': type_check(float),
+        'str': lambda t: True
+    }
+    
+    def validate_value(self):
+      if not self.VALIDATE_VALUE[self.serie.value_type](self.value):
+        raise ValidationError({'value':'Invalid value'})
+
+    def validate_time(self):
+      if not self.VALIDATE_TIME[self.serie.time_type](self.time):
+        raise ValidationError({'time':'Invalid time/date'})
 
     def get_time(self):
       if self.serie.time_type == "psx":
@@ -94,7 +127,7 @@ class DataPoint(models.Model):
         return int(self.value)
       elif self.serie.time_type == "iso":
         return self.time
-      
+    
     def get_value(self):
       if self.serie.value_type == "flt":
         return float(self.value)
