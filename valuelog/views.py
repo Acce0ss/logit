@@ -10,18 +10,23 @@ from django.utils import timezone, dateparse
 from django.contrib.auth import authenticate, login as blogin, logout as blogout
 from django.contrib.auth.decorators import login_required
 
+from django.middleware.csrf import get_token
+
 from django.db.models import F
 
 def index(request):
   return HttpResponse("Hi worldies");
 
+def csrftoken(request):
+  return request.META.get('CSRF_COOKIE') if request.META.get('CSRF_COOKIE') else get_token(request)
+
 def login_challenge(request):
-  return HttpResponse(json.dumps({'code':['SUCCESS'], 'csrf': request.META.get("CSRF_COOKIE")}))
+  return HttpResponse(json.dumps({'code':['SUCCESS'], 'csrf': csrftoken(request)}))
 
 def login(request):
 
   if request.user.is_authenticated:
-    return HttpResponse(json.dumps({'code': ['ALREADY_LOGGED_IN'], 'csrf':request.META.get('CSRF_COOKIE')}))
+    return HttpResponse(json.dumps({'code': ['ALREADY_LOGGED_IN'], 'csrf': csrftoken(request)}))
   
   try:
     creds = json.loads(request.POST.get('creds'))
@@ -34,14 +39,14 @@ def login(request):
   
   if user is not None:
     blogin(request, user)
-    return HttpResponse(json.dumps({'code': ['LOGIN_SUCCESS'], 'csrf':request.META.get('CSRF_COOKIE')}))
+    return HttpResponse(json.dumps({'code': ['LOGIN_SUCCESS'], 'csrf':csrftoken(request)}))
   else:
-    return HttpResponse(json.dumps({'code': ['LOGIN_FAILED'], 'csrf':request.META.get('CSRF_COOKIE')}))
+    return HttpResponse(json.dumps({'code': ['LOGIN_FAILED'], 'csrf':csrftoken(request)}))
 
 @login_required
 def logout(request):
   blogout(request)
-  return HttpResponse(json.dumps({'code': ['LOGOUT_SUCCESS']}))
+  return HttpResponse(json.dumps({'code': ['LOGOUT_SUCCESS'], 'csrf':csrftoken(request)}))
 
 @login_required
 def series(request):
