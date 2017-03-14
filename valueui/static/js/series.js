@@ -106,3 +106,12 @@ function postValueTo(serieid, valueform)
 	url: "/api/serie/" + serieid + "/datapoint"
     });
 }
+
+function postSerie(serieform)
+{    
+    return $.ajax({
+	method: "POST",
+	data: serieform.serialize(),
+	url: "/api/serie"
+    });
+}
