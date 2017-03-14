@@ -97,3 +97,12 @@ function drawSerieOn(serie, canvas)
 	}
     });
 }
+
+function postValueTo(serieid, valueform)
+{    
+    return $.ajax({
+	method: "POST",
+	data: valueform.serialize(),
+	url: "/api/serie/" + serieid + "/datapoint"
+    });
+}
