@@ -38,7 +38,9 @@ def about(request):
 def series(request):
   context = {
     "pagename": "series",
-    "loggedIn": request.user.is_authenticated
+    "loggedIn": request.user.is_authenticated,
+    "value_type_options": Serie.VALUE_TYPE,
+    "time_type_options": Serie.TIME_TYPE
   }
   return render(request, 'ui/series-page.html', context)
 

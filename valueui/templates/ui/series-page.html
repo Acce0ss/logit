@@ -7,14 +7,48 @@
 <script>
   $(document).ready(function (e){
   populateListWithSeries($('#series-list'));
+  $("#add-serie").submit(function (event){
+  event.preventDefault();
+
+  postSerie($("#add-serie"))
+  .then(function (data){
+  console.log(data);
+  $("#series-list").empty();
+  populateListWithSeries($("#series-list"));
+  }).fail(function(error){
+  console.log("Failed to add serie!");
+  });
+  
+  });
   });
 </script>
-<h3>
-  Your series
-</h3>
-<ul id="series-list" data-role="listview" data-inset="True">
-</ul>
 
+<div>
+  <h2>Add new</h2>
+  <form id="add-serie">
+    <label for="name">Name</label>
+    <input type="text" placeholder="Name" name="name"/>
+    <select id="serie-value-type" name="value_type">
+      {% for typeid,typename in value_type_options %}
+      <option value="{{typeid}}">{{typename}}</option>
+      {% endfor %}
+    </select>
+    <select id="serie-time-type" name="time_type">
+      {% for typeid,typename in time_type_options %}
+      <option value="{{typeid}}">{{typename}}</option>
+      {% endfor %}
+    </select>
+    <input type="submit" value="Add"/>
+  </form>
+</div>
+
+<div>
+  <h3>
+    Your series
+  </h3>
+  <ul id="series-list" data-role="listview" data-inset="True">
+  </ul>
+</div>
 {% else %}
 
 <p> Here, all your series will be listed after you log in. </p>
