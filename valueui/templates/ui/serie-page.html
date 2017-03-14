@@ -7,11 +7,30 @@
 <script>
   $(document).ready(function (e){
   populateCanvasIfDataAvailable($("#serie-{{serie_id}}-graph"), {{serie_id}});
+  $("#serie-{{serie_id}}-addvalue").submit(function(event){
+
+  event.preventDefault();
+  postValueTo({{serie_id}}, $("#serie-{{serie_id}}-addvalue"))
+  .then(function (data) {
+  console.log("Received response: ");
+  console.log(data);
+  populateCanvasIfDataAvailable($("#serie-{{serie_id}}-graph"), {{serie_id}});
+  }).fail(function (error){
+  console.log("adding value failed!");
+  });
+  
+  });
   });
 </script>
 <h3>
   Serie
 </h3>
+
+<form id="serie-{{serie_id}}-addvalue">
+  <label for="value">Value:</label>
+  <input type="text" placeholder="value" name="value"/>
+  <input type="submit" value="Add"/>
+</form>
 
 <div>
   <canvas id="serie-{{serie_id}}-graph"></canvas>
