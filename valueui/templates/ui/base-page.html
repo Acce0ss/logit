@@ -6,6 +6,7 @@
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+  <link rel="stylesheet" href="{% static 'css/footer-buttons.css' %}">
   <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
   <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
   <script src="{% static 'js/bower_components/chart.js/dist/Chart.js' %}"></script>
@@ -25,8 +26,7 @@
 <body>
   <div data-role="page" id="{{pagename}}-page" >
     <div data-role="header">
-      <h1>LogIt</h1>
-      <a href="#{{pagename}}-menu-panel" class="ui-btn ui-icon-grid ui-btn-icon-notext ui-btn-right"></a>
+      <h1>{{pagename}}</h1>
     </div>
 
     <div role="main" class="ui-content">
@@ -34,9 +34,11 @@
       {% endblock %}
     </div>
         
-    <div data-role="footer" id="app-footer">
-      <h2>Powered by Django and jQuery</h2>
-      <h2>(c) Asser Lähdemäki 2017</h2>
+    <div data-role="footer" data-position="fixed"
+	 id="app-footer" >
+      <h2>LogIt</h2>
+      <a href="#{{pagename}}-menu-panel"
+	 class="footer-button-right ui-btn ui-corner-all ui-btn-inline ui-btn-icon-notext ui-icon-grid"></a>
     </div>
 
     <div data-role="panel" id="{{pagename}}-menu-panel" data-position="right"
