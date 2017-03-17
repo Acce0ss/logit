@@ -10,7 +10,7 @@
   $("#serie-{{serie_id}}-addvalue").submit(function(event){
 
   event.preventDefault();
-  postValueTo({{serie_id}}, $("#serie-{{serie_id}}-addvalue"))
+  postValueTo({{serie_id}}, $("#serie-{{serie_id}}-addvalue").serialize())
   .then(function (data) {
   console.log("Received response: ");
   console.log(data);

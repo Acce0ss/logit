@@ -98,11 +98,11 @@ function drawSerieOn(serie, canvas)
     });
 }
 
-function postValueTo(serieid, valueform)
+function postValueTo(serieid, valuedata)
 {    
     return $.ajax({
 	method: "POST",
-	data: valueform.serialize(),
+	data: valuedata,
 	url: "/api/serie/" + serieid + "/datapoint"
     });
 }
