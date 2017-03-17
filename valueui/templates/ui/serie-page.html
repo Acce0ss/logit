@@ -26,15 +26,15 @@
   Serie
 </h3>
 
+<div>
+  <canvas id="serie-{{serie_id}}-graph"></canvas>
+</div>
+
 <form id="serie-{{serie_id}}-addvalue">
   <label for="value">Value:</label>
   <input type="text" placeholder="value" name="value"/>
   <input type="submit" value="Add"/>
 </form>
-
-<div>
-  <canvas id="serie-{{serie_id}}-graph"></canvas>
-</div>
 
 <ul id="datapoint-list-{{serie_id}}" data-role="listview" data-inset="True">
 </ul>
