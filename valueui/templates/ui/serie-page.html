@@ -10,7 +10,7 @@
   $("#serie-{{serie_id}}-addvalue").submit(function(event){
 
   event.preventDefault();
-  postValueTo({{serie_id}}, $("#serie-{{serie_id}}-addvalue"))
+  postValueTo({{serie_id}}, $("#serie-{{serie_id}}-addvalue").serialize())
   .then(function (data) {
   console.log("Received response: ");
   console.log(data);
@@ -18,7 +18,10 @@
   }).fail(function (error){
   console.log("adding value failed!");
   });
-  
+
+  });
+  $('#import-button').click(function (){
+  importValuesFromCSVTo({{serie_id}},$("#import-source")[0]);
   });
   });
 </script>
@@ -35,6 +38,10 @@
   <input type="text" placeholder="value" name="value"/>
   <input type="submit" value="Add"/>
 </form>
+
+<h2>Add values from CSV-file</h2>
+<input type='file' id='import-source'/>
+<button id='import-button'>Import</button>
 
 <ul id="datapoint-list-{{serie_id}}" data-role="listview" data-inset="True">
 </ul>
