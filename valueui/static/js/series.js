@@ -115,3 +115,21 @@ function postSerie(serieform)
 	url: "/api/serie"
     });
 }
+
+function importValuesFromCSVTo(serieid, fileSelector)
+{
+  var reader = new FileReader();
+  reader.onload = function(){
+    var text = reader.result;
+    var lines = text.split(/\r\n|\n/);
+    lines.forEach(function (e,i,l){
+      timeAndValue = e.split(';');
+ 
+      postValueTo(serieid, $.param({time:timeAndValue[0],value:timeAndValue[1]}))
+	.fail(function (){
+	  console.log("Error in CSV file format: use two fields, no headings and semicolon separator.");
+	});
+    });
+  };
+  reader.readAsText(fileSelector.files[0]);
+}
