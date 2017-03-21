@@ -89,9 +89,6 @@ function drawSerieOn(serie, canvas)
 	    },
 	    scales: {
 		yAxes: [{
-		    ticks: {
-			beginAtZero:true
-		    }
 		}]
 	    }
 	}
