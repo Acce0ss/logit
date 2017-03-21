@@ -5,6 +5,7 @@ app_name = 'valuelog'
 
 urlpatterns = [
     url(r'^$', views.index, name="index"),
+    url(r'^register$', views.register, name="register"),
     url(r'^login$', views.login, name="login"),
     url(r'^login/challenge$', views.login_challenge, name="login_challenge"),
     url(r'^logout$', views.logout, name="logout"),
