@@ -63,9 +63,9 @@ function drawSerieOn(serie, canvas)
     var value_data = [];
 
     serie.values.forEach(function (e,i,l){
-	console.log(e);
-	time_data.push(e.time);
-	value_data.push(e.value);
+      console.log(e);
+      time_data.push(moment(e.time).format('YYYY-MM-DD'));
+      value_data.push(e.value);
     });
     
     var myChart = new Chart(canvas, {
@@ -89,9 +89,6 @@ function drawSerieOn(serie, canvas)
 	    },
 	    scales: {
 		yAxes: [{
-		    ticks: {
-			beginAtZero:true
-		    }
 		}]
 	    }
 	}

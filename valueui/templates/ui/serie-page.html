@@ -39,12 +39,12 @@
   <input type="submit" value="Add"/>
 </form>
 
+<ul id="datapoint-list-{{serie_id}}" data-role="listview" data-inset="True">
+</ul>
+
 <h2>Add values from CSV-file</h2>
 <input type='file' id='import-source'/>
 <button id='import-button'>Import</button>
-
-<ul id="datapoint-list-{{serie_id}}" data-role="listview" data-inset="True">
-</ul>
 
 {% else %}
 
