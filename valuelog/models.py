@@ -89,6 +89,9 @@ class DataPoint(models.Model):
     value = models.CharField(max_length=40)
     time = models.CharField(max_length=40)
 
+    class Meta:
+        ordering = ('time',)
+
     def type_check(target):
         def _type_check(value):
             try:
