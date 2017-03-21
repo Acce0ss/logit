@@ -21,8 +21,6 @@ def index(request):
   return HttpResponse("Hi worldies");
 
 def csrftoken(request):
-  print(request.META.get('CSRF_COOKIE'))
-  print(request.META.get('CSRF_COOKIE') if request.META.get('CSRF_COOKIE') else get_token(request))
   return request.META.get('CSRF_COOKIE') if request.META.get('CSRF_COOKIE') else get_token(request)
 
 def register(request):
