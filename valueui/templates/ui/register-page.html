@@ -2,8 +2,23 @@
 
 {% block content %}
 
-<p>
-Here you can register.
-</p>
+<script src='https://www.google.com/recaptcha/api.js'></script>
+
+<script>
+ $(document).ready(function (){
+   $('#registration-form').submit(function (event){
+     event.preventDefault()
+     postRegistrationForm($(this))
+   })
+ })
+</script>
+
+<form id="registration-form">
+  <input type="text" name="username" placeholder="username" />
+  <input type="email" name="email" placeholder="email" />
+  <input type="password" name="password" placeholder="password" />
+  <div class="g-recaptcha" data-sitekey="6Ld54hkUAAAAAHKLIk4O977925Rw899l5uGiSk3b"></div>
+  <input type="submit" value="Register"/>
+</form>
 
 {% endblock %}

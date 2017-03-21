@@ -1,6 +1,7 @@
 import json
+import requests
 
-from .models import Serie, DataPoint
+from .models import Serie, DataPoint, LogUser
 
 from django.core.exceptions import ValidationError
 
@@ -14,11 +15,41 @@ from django.middleware.csrf import get_token
 
 from django.db.models import F
 
+from django.conf import settings
+
 def index(request):
   return HttpResponse("Hi worldies");
 
 def csrftoken(request):
+  print(request.META.get('CSRF_COOKIE'))
+  print(request.META.get('CSRF_COOKIE') if request.META.get('CSRF_COOKIE') else get_token(request))
   return request.META.get('CSRF_COOKIE') if request.META.get('CSRF_COOKIE') else get_token(request)
+
+def register(request):
+  try:
+    recaptcha_result = requests.post(url='https://www.google.com/recaptcha/api/siteverify',
+                                     data={
+                                       'secret': settings.RECAPTCHA_SECRET_KEY,
+                                       'response': request.POST.get('g-recaptcha-response'),
+                                       # TODO: find out better way to get client IP reliably??
+                                       'remoteip': request.META['HTTP_X_FORWARDED_FOR']
+                                     }).json()
+
+    if recaptcha_result['success']:
+      newUser= LogUser.objects.validate_and_create_user(request.POST.get('username'),
+                                                        request.POST.get('email'),
+                                                        request.POST.get('password'))
+      return HttpResponse(
+        json.dumps({
+          'code': ['REGISTER_SUCCESS'],
+          'id': newUser.id
+        })
+      )
+    else:
+      raise Exception()
+    
+  except:
+    return HttpResponse(json.dumps({'code': ['REGISTER_FAILED']}))
 
 def login_challenge(request):
   return HttpResponse(json.dumps({'code':['SUCCESS'], 'csrf': csrftoken(request)}))

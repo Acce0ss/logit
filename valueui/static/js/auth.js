@@ -1,3 +1,23 @@
+function postRegistrationForm(form)
+{
+  $.ajax({
+    url: '/api/register',
+    method: "POST",
+    data: form.serialize(),
+  })
+    .then( function (data) {
+      data = JSON.parse(data)
+      console.log(data)
+      if(data['code'][0] === 'REGISTER_SUCCESS')
+      {
+	document.location.href = '/login';
+      }
+    })
+    .fail(function(error){
+      console.log("Registration failed: " + error)
+    });
+}
+
 function postLoginForm(form)
 {
   $.ajax({
