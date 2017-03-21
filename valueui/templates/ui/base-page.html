@@ -3,63 +3,63 @@
 
 <!DOCTYPE html>
 <html>
-<head>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
-  <link rel="stylesheet" href="{% static 'css/footer-buttons.css' %}">
-  <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
-  <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
-  <script src="{% static 'js/bower_components/chart.js/dist/Chart.js' %}"></script>
-  <script src="{% static 'js/bower_components/moment/min/moment.min.js' %}"></script>
-  <script src="{% static 'js/auth.js'%}"></script>
-  {% if loggedIn %}
-  <script src="{% static 'js/series.js'%}"></script>
-  {% endif %}
-  <script>
-      $(document).ready(function (){
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+    <link rel="stylesheet" href="{% static 'css/footer-buttons.css' %}">
+    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    <script src="{% static 'js/bower_components/chart.js/dist/Chart.js' %}"></script>
+    <script src="{% static 'js/bower_components/moment/min/moment.min.js' %}"></script>
+    <script src="{% static 'js/auth.js'%}"></script>
+    {% if loggedIn %}
+    <script src="{% static 'js/series.js'%}"></script>
+    {% endif %}
+    <script>
+     $(document).ready(function (){
 
-      //set the CSRF token
-      setupAjax("{{csrf_token}}");
+       //set the CSRF token
+       setupAjax("{{csrf_token}}");
+       
+     });
+    </script>
+  </head>
+  <body>
+    <div data-role="page" id="{{pagename}}-page" >
+      <div data-role="header">
+	<h1>{{pagename}}</h1>
+      </div>
+
+      <div role="main" class="ui-content">
+	{% block content %}
+	{% endblock %}
+      </div>
       
-      });
-  </script>
-</head>
-<body>
-  <div data-role="page" id="{{pagename}}-page" >
-    <div data-role="header">
-      <h1>{{pagename}}</h1>
+      <div data-role="footer" data-position="fixed"
+	   id="app-footer" >
+	<h2>LogIt</h2>
+	<a href="#{{pagename}}-menu-panel"
+	   class="footer-button-right ui-btn ui-corner-all ui-btn-inline ui-btn-icon-notext ui-icon-grid"></a>
+      </div>
+
+      <div data-role="panel" id="{{pagename}}-menu-panel" data-position="right"
+	   data-display="reveal">
+
+	{% if loggedIn %}
+	<button onclick='sendLogout()'>Logout</button>
+	{% else %}
+	<a href="/login" data-prefetch="true" class="ui-btn">Login</a>
+	<a href="/register" data-prefetch="true" class="ui-btn">Register</a>
+	{% endif %}
+
+	{% if loggedIn %}
+	<a href="/series" data-prefetch="true" class="ui-btn">Series</a>
+	<a href="/settings" class="ui-btn">Settings</a>
+	{% endif %}
+	
+	<a href="/about" data-prefetch="true" class="ui-btn">About</a>
+      </div>
+
     </div>
-
-    <div role="main" class="ui-content">
-      {% block content %}
-      {% endblock %}
-    </div>
-        
-    <div data-role="footer" data-position="fixed"
-	 id="app-footer" >
-      <h2>LogIt</h2>
-      <a href="#{{pagename}}-menu-panel"
-	 class="footer-button-right ui-btn ui-corner-all ui-btn-inline ui-btn-icon-notext ui-icon-grid"></a>
-    </div>
-
-    <div data-role="panel" id="{{pagename}}-menu-panel" data-position="right"
-	 data-display="reveal">
-
-      {% if loggedIn %}
-      <button onclick='sendLogout()'>Logout</button>
-      {% else %}
-      <a href="/login" data-prefetch="true" class="ui-btn">Login</a>
-      <a href="/register" data-prefetch="true" class="ui-btn">Register</a>
-      {% endif %}
-
-      {% if loggedIn %}
-      <a href="/series" data-prefetch="true" class="ui-btn">Series</a>
-      <a href="/settings" class="ui-btn">Settings</a>
-      {% endif %}
-      
-      <a href="/about" data-prefetch="true" class="ui-btn">About</a>
-    </div>
-
-  </div>
-</body>
+  </body>
 </html>

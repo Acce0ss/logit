@@ -5,22 +5,22 @@
 {% if loggedIn %}
 
 <script>
-  $(document).ready(function (e){
-  populateListWithSeries($('#series-list'));
-  $("#add-serie").submit(function (event){
-  event.preventDefault();
+ $(document).ready(function (e){
+   populateListWithSeries($('#series-list'));
+   $("#add-serie").submit(function (event){
+     event.preventDefault();
 
-  postSerie($("#add-serie"))
-  .then(function (data){
-  console.log(data);
-  $("#series-list").empty();
-  populateListWithSeries($("#series-list"));
-  }).fail(function(error){
-  console.log("Failed to add serie!");
-  });
-  
-  });
-  });
+     postSerie($("#add-serie"))
+	  .then(function (data){
+	    console.log(data);
+	    $("#series-list").empty();
+	    populateListWithSeries($("#series-list"));
+	  }).fail(function(error){
+	    console.log("Failed to add serie!");
+	  });
+     
+   });
+ });
 </script>
 
 <div>

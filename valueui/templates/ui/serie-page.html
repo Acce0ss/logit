@@ -5,25 +5,25 @@
 {% if loggedIn %}
 
 <script>
-  $(document).ready(function (e){
-  populateCanvasIfDataAvailable($("#serie-{{serie_id}}-graph"), {{serie_id}});
-  $("#serie-{{serie_id}}-addvalue").submit(function(event){
+ $(document).ready(function (e){
+   populateCanvasIfDataAvailable($("#serie-{{serie_id}}-graph"), {{serie_id}});
+   $("#serie-{{serie_id}}-addvalue").submit(function(event){
 
-  event.preventDefault();
-  postValueTo({{serie_id}}, $("#serie-{{serie_id}}-addvalue").serialize())
-  .then(function (data) {
-  console.log("Received response: ");
-  console.log(data);
-  populateCanvasIfDataAvailable($("#serie-{{serie_id}}-graph"), {{serie_id}});
-  }).fail(function (error){
-  console.log("adding value failed!");
-  });
+     event.preventDefault();
+     postValueTo({{serie_id}}, $("#serie-{{serie_id}}-addvalue").serialize())
+	  .then(function (data) {
+	    console.log("Received response: ");
+	    console.log(data);
+	    populateCanvasIfDataAvailable($("#serie-{{serie_id}}-graph"), {{serie_id}});
+	  }).fail(function (error){
+	    console.log("adding value failed!");
+	  });
 
-  });
-  $('#import-button').click(function (){
-  importValuesFromCSVTo({{serie_id}},$("#import-source")[0]);
-  });
-  });
+   });
+   $('#import-button').click(function (){
+     importValuesFromCSVTo({{serie_id}},$("#import-source")[0]);
+   });
+ });
 </script>
 <h3>
   Serie

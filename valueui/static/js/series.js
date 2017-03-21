@@ -1,116 +1,116 @@
 function getSeriesListData()
 {
-    return $.ajax({
-	method: "GET",
-	url: "/api/series"
-    });
+  return $.ajax({
+    method: "GET",
+    url: "/api/series"
+  });
 }
 
 function populateListWithSeries(list)
 {
-    getSeriesListData()
-	.then(JSON.parse)
-	.then(function (data){
-	    data.series.forEach(function (serie,i,l) {
-		addSerieListItem(list, serie);
-	    });
-	}).fail(function (data){
-	    console.log("Error");
-	    console.log(data);
-	});
+  getSeriesListData()
+    .then(JSON.parse)
+    .then(function (data){
+      data.series.forEach(function (serie,i,l) {
+	addSerieListItem(list, serie);
+      });
+    }).fail(function (data){
+      console.log("Error");
+      console.log(data);
+    });
 }
 
 function addSerieListItem(parent, serie)
 {
-    var serieItem = $('<li></li>')
-    serieItem.append(
-	$('<a href="/serie/' + serie.id +
-	  '" class="ui-btn">' + serie.name +
-	  '</a>'));
-    parent.append(serieItem)
+  var serieItem = $('<li></li>')
+  serieItem.append(
+    $('<a href="/serie/' + serie.id +
+      '" class="ui-btn">' + serie.name +
+      '</a>'));
+  parent.append(serieItem)
 }
 
 function getSerieData(serieid)
 {
-    return $.ajax({
-	method: "GET",
-	url: "/api/serie/" + serieid
-    });
+  return $.ajax({
+    method: "GET",
+    url: "/api/serie/" + serieid
+  });
 }
 
 function populateCanvasIfDataAvailable(canvas, serieid)
 {
-    getSerieData(serieid)
-	.then(JSON.parse)
-	.then(function (serie){
-	    if(serie.values.length > 0)
-	    {
-		drawSerieOn(serie, canvas);
-	    }
-	    else
-	    {
-		console.log("No datapoints");
-	    }
-	})
-	.fail(function (data){
-	    console.log("getting data failed");
-	});
+  getSerieData(serieid)
+    .then(JSON.parse)
+    .then(function (serie){
+      if(serie.values.length > 0)
+      {
+	drawSerieOn(serie, canvas);
+      }
+      else
+      {
+	console.log("No datapoints");
+      }
+    })
+    .fail(function (data){
+      console.log("getting data failed");
+    });
 }
 
 function drawSerieOn(serie, canvas)
 {
-    var time_data = [];
-    var value_data = [];
+  var time_data = [];
+  var value_data = [];
 
-    serie.values.forEach(function (e,i,l){
-      console.log(e);
-      time_data.push(moment(e.time).format('YYYY-MM-DD'));
-      value_data.push(e.value);
-    });
-    
-    var myChart = new Chart(canvas, {
-	responsive: true,
-	maintainAspectRatio: false,
+  serie.values.forEach(function (e,i,l){
+    console.log(e);
+    time_data.push(moment(e.time).format('YYYY-MM-DD'));
+    value_data.push(e.value);
+  });
+  
+  var myChart = new Chart(canvas, {
+    responsive: true,
+    maintainAspectRatio: false,
 
-	type: 'line',
-	data: {
-	    labels: time_data,
-	    datasets: [{
-		label: serie.name,
-		data: value_data,
-	    }]
-	},
-	options: {
-	    layout: {
-		padding: {
-		    left: 30,
-		    right: 30
-		}
-	    },
-	    scales: {
-		yAxes: [{
-		}]
-	    }
+    type: 'line',
+    data: {
+      labels: time_data,
+      datasets: [{
+	label: serie.name,
+	data: value_data,
+      }]
+    },
+    options: {
+      layout: {
+	padding: {
+	  left: 30,
+	  right: 30
 	}
-    });
+      },
+      scales: {
+	yAxes: [{
+	}]
+      }
+    }
+  });
 }
 
 function postValueTo(serieid, valuedata)
 {    
-    return $.ajax({
-	method: "POST",
-	data: valuedata,
-	url: "/api/serie/" + serieid + "/datapoint"
-    });
+  return $.ajax({
+    method: "POST",
+    data: valuedata,
+    url: "/api/serie/" + serieid + "/datapoint"
+  });
 }
 
 function postSerie(serieform)
 {    
-    return $.ajax({
-	method: "POST",
-	data: serieform.serialize(),
-	url: "/api/serie"
-    });
+  return $.ajax({
+    method: "POST",
+    data: serieform.serialize(),
+    url: "/api/serie"
+  });
 }
 
 function importValuesFromCSVTo(serieid, fileSelector)
@@ -121,7 +121,7 @@ function importValuesFromCSVTo(serieid, fileSelector)
     var lines = text.split(/\r\n|\n/);
     lines.forEach(function (e,i,l){
       timeAndValue = e.split(';');
- 
+      
       postValueTo(serieid, $.param({time:timeAndValue[0],value:timeAndValue[1]}))
 	.fail(function (){
 	  console.log("Error in CSV file format: use two fields, no headings and semicolon separator.");
